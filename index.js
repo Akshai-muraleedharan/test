@@ -13,9 +13,6 @@ app.use(cookieParser())
 db()
 
 app.use(express.static('public'))
-app.get('/',(req,res)=>{
-    res.send("hello user")
-})
 
 app.use('/api/v1/user',userRouter)
 

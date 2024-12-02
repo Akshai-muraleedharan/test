@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px ;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body style="height: 90vh; display: flex;justify-content: center; align-items: center;flex-direction: column;">
+
+    <h1 style="text-align: center;">login</h1>
+   
+
+    <div style="display: flex;justify-content: center;">
+        <form id="loginform">
+            <label for="username" style="display:block ;margin-bottom: 10px; ">username</label>
+            <input type="text" id="username" style="padding: 6px 0px 6px 5px; margin-bottom: 20px;" placeholder="username">
+    
+            <label for="username"  style="display: block;margin-bottom: 10px;">password</label>
+            <input type="text" id="password" style="padding: 6px 0px 6px 5px;" placeholder="password">
+            <button style="display: block; cursor: pointer;margin: 10px 0px 0px auto;outline: none;border: none; background-color: blue; color: white; padding: 6px 10px;">Submit</button>
+            <p id="error" style="text-align: end; color: red;font-size: 12px; margin-top: 10px; height: 10px;"></p>
+        </form>
+       
+    </div>
+
+    <script>
+
+          document.getElementById("loginform").addEventListener("submit", async(e)=>{
+            e.preventDefault()
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const errorEle = document.getElementById('error')
+            try {
+                const response = await axios.post('/api/v1/user/login',{username,password})
+            
+                if(response.data.success === true){
+                    window.location.href = "./secure.html"
+                }
+
+            } catch (error) {
+                console.log(error)
+                errorEle.textContent = error.response.data.message
+
+                
+            }
+          })
+
+    </script>
+</body>
+</html>

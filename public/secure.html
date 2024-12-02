@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>secure</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1 style="text-align: center;" id="secure_name"></h1>
+
+    <button id="logOut">Log Out</button>
+
+    <script>
+        const logOutBtn = document.getElementById('logOut')
+        async function fetchSecureData() {
+            const displayName = document.getElementById('secure_name')
+            try {
+                const res = await axios.get('/api/v1/user/secure-route',{withCredentials: true})
+                
+                 displayName.textContent = ` Welcome ${res.data.data.username}`
+            } catch (error) {
+                console.log(error)
+
+                if(error.response && error.response.status === 403){
+                    window.location.href = "./index.html"
+                }
+            }
+        }
+
+
+      
+           
+       
+
+        function removeCookie() {
+      document.cookie = 'token=; max-age=0; path=/';  // Set the cookie with 0 max-age to remove it
+    }
+
+        logOutBtn.addEventListener('click',async()=>{
+            try {
+             const res = await axios.post("api/v1/user/logout",{}, { withCredentials: true })
+
+
+             removeCookie();
+
+             if(res.status === 200){
+                  window.location.reload()
+             }
+
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+        async function checkPage() {
+            try {
+                const res = await axios.get("api/v1/user/check",{}, { withCredentials: true })
+
+                fetchSecureData()
+            } catch (error) {
+                console.log(error)
+                 if(error){
+                     window.location.href = "./index.html"
+                 }
+            }
+        }
+
+
+        checkPage() 
+    </script>
+</body>
+</html>
